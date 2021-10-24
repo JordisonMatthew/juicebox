@@ -2,6 +2,7 @@ const { Client } = require('pg');
 
 const client = new Client('postgres://localhost:5432/juicebox-dev');
 
+// returns the users table data without password
 const getAllUsers = async () => {
     const {rows} = await client.query(`
     SELECT id, username, name, location, active
@@ -10,6 +11,7 @@ const getAllUsers = async () => {
     return rows;
 }
 
+// adds a new user to the users table and returns it
 const createUser = async ({ 
     username, 
     password,
@@ -30,6 +32,7 @@ const createUser = async ({
     }
 }
 
+// updates a specified user's data in the users table and returns it
 const updateUser = async (id, fields = {}) => {
     const setString = Object.keys(fields).map(
         (key, index) => `"${ key }"=$${ index + 1 }`
@@ -53,6 +56,7 @@ const updateUser = async (id, fields = {}) => {
     }
 }
 
+// adds a new post to the posts table and returns it
 const createPost = async ({
     authorId,
     title,
@@ -74,6 +78,7 @@ const createPost = async ({
     }
 }
 
+// updates a post in the posts table and the tags related to it
 const updatePost = async (postId, fields = {}) => {
     const {tags} = fields;
     delete fields.tags;
@@ -112,6 +117,7 @@ const updatePost = async (postId, fields = {}) => {
     }
 }
 
+// returns all the posts in the posts table
 const getAllPosts = async () => {
     try {
         const {rows: postIds} = await client.query(`
@@ -126,6 +132,7 @@ const getAllPosts = async () => {
     }
 }
 
+// returns the posts data made by a user
 const getPostsByUser = async (userId) => {
     try {
         const {rows: postIds} = await client.query(`
@@ -141,6 +148,7 @@ const getPostsByUser = async (userId) => {
     }
 }
 
+// returns a post specified by it's id
 const getPostById = async (postId) => {
     try {
         const {rows: [post]} = await client.query(`
@@ -169,6 +177,8 @@ const getPostById = async (postId) => {
         throw err;
     }
 }
+
+// returns the specified users data from the users table and all of the posts they have made
 const getUserById = async (userId) => {
     try {
         const {rows: [user]} = await client.query(`
@@ -190,6 +200,7 @@ const getUserById = async (userId) => {
     }
 }
 
+// adds tags data to the tags table
 const createTags = async (tagList) => {
     if (tagList.length === 0) {
         return;
@@ -217,6 +228,7 @@ const createTags = async (tagList) => {
     }
 }
 
+// adds a post tag to the post_tags table
 const createPostTag = async (postId, tagId) => {
     try {
         await client.query(`
@@ -228,6 +240,7 @@ const createPostTag = async (postId, tagId) => {
     }
 }
 
+// adds specified tags to a post
 const addTagsToPost = async (postId, tagList) => {
     try {
         const createPostTagPromises = tagList.map(
@@ -242,6 +255,7 @@ const addTagsToPost = async (postId, tagList) => {
     }
 }
 
+// gets all the posts from the post table that have the specified "tagName"
 const getPostsByTagName = async (tagName) => {
     try {
         const {rows: postIds} = await client.query(`
@@ -267,7 +281,5 @@ module.exports = {
     getAllPosts,
     getPostsByUser,
     getUserById,
-    createTags,
-    addTagsToPost,
     getPostsByTagName,
 }
