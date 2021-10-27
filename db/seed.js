@@ -7,7 +7,8 @@ const {
     updatePost,
     getAllPosts,
     getUserById,
-    getPostsByTagName
+    getPostsByTagName,
+    getAllTags
     
 } = require('./index');
 
@@ -153,19 +154,19 @@ const testDB = async () => {
         console.log('Starting to test database...');
 
         const users = await getAllUsers(); // gets all the users table's data
-        console.log('getAllUsers:', users); // displays the users data
+        //console.log('getAllUsers:', users); // displays the users data
 
-        console.log('Calling updateUser on users[0]');
+        //console.log('Calling updateUser on users[0]');
         // updates a user with the updateUser function
         const updateUserResult = await updateUser(users[0].id, {
             name: "Newname Sogood",
             location: "Lesterville, KY"
         });
-        console.log('updateUser Result:', updateUserResult); // log result of updateUser function
+        //console.log('updateUser Result:', updateUserResult); // log result of updateUser function
 
-        console.log('Calling getAllPosts');
+        //console.log('Calling getAllPosts');
         const posts = await getAllPosts(); // gets all the posts table's data
-        console.log("Result:", posts); // logs all the posts
+        //console.log("Result:", posts); // logs all the posts
 
         console.log('Calling updatePost on posts[0]');
         // updates specified post using the updatePost function
@@ -175,20 +176,20 @@ const testDB = async () => {
         });
         console.log('Result', updatePostResult); // logs the updated post
 
-        console.log("Calling getUserById with 2");
+        //console.log("Calling getUserById with 2");
         const albert = await getUserById(2); // gets the users specific data
-        console.log("Result: ", albert); // logs albert users data
+        //console.log("Result: ", albert); // logs albert users data
 
-        console.log('Calling updatePost on post[1], only updating the tags');
+        //console.log('Calling updatePost on post[1], only updating the tags');
         // updates the tags of a specified post
         const updatePostTagsResult = await updatePost(posts[1].id, {
             tags: ["#youcandoanything", "#redfish", "#bluefish"]
         });
-        console.log('Result:', updatePostTagsResult); // logs the results of updatePost
+        //console.log('Result:', updatePostTagsResult); // logs the results of updatePost
 
-        console.log('Calling getPostsByTagName with #happy');
+        //console.log('Calling getPostsByTagName with #happy');
         const postsWithHappy = await getPostsByTagName("#happy"); // gets all the posts with a specific tag name
-        console.log("Result:", postsWithHappy); // logs the posts with a tag of "#happy"
+        //.log("Result:", postsWithHappy); // logs the posts with a tag of "#happy"
 
         console.log('Finished database tests!');
     } catch(err) {
