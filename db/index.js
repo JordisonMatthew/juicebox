@@ -200,6 +200,20 @@ const getUserById = async (userId) => {
     }
 }
 
+const getUserByUsername = async (username) => {
+    try {
+        const {rows: [user]} = await client.query(`
+        SELECT *
+        FROM users
+        WHERE username=$1;
+        `, [username]);
+
+        return user;
+    } catch(error) {
+        throw error;
+    }
+}
+
 // adds tags data to the tags table
 const createTags = async (tagList) => {
     if (tagList.length === 0) {
@@ -295,4 +309,5 @@ module.exports = {
     getUserById,
     getPostsByTagName,
     getAllTags,
+    getUserByUsername,
 }
