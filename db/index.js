@@ -1,6 +1,6 @@
 const { Client } = require('pg');
 
-const client = new Client('postgres://localhost:5432/juicebox-dev');
+const client = new Client(process.env.DATABASE_URL || 'postgres://localhost:5432/juicebox-dev');
 
 // returns the users table data without password
 const getAllUsers = async () => {
